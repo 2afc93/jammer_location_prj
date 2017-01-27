@@ -3,7 +3,7 @@ function [ system_posteriori ] = EKFilter_new(system_priori, F_KF, G_KF, Q_KF, R
     % Extended Kalman Filter
     k = system_priori.step;
     x_jam_old = system_priori.x_jam(:,k-1);
-    if k > 100
+    if k > 10000
         R_KF = 0.07; 
         alpha = system_priori.alpha(k)/system_priori.alpha(k-5);
         x_uav_0 = system_priori.x_uav(:,k-5);
@@ -57,13 +57,13 @@ function [ system_posteriori ] = EKFilter_new(system_priori, F_KF, G_KF, Q_KF, R
     system_posteriori.K_gain(:,k) = K_gain;
     
 
-    N_back = 450;
-    alpha_filt = 0.7;
-    if k < 1600
-        system_posteriori.x_jam(:,k) = x_state;
-    else
-        system_posteriori.x_jam(:,k) = ( alpha_filt*x_state + (1-alpha_filt)*mean(system_posteriori.x_jam(:,(k-N_back):(k-1)),2) );
-    end
+%     N_back = 450;
+%     alpha_filt = 0.7;
+%     if k < 1600
+%         system_posteriori.x_jam(:,k) = x_state;
+%     else
+%         system_posteriori.x_jam(:,k) = ( alpha_filt*x_state + (1-alpha_filt)*mean(system_posteriori.x_jam(:,(k-N_back):(k-1)),2) );
+%     end
 
 end
 

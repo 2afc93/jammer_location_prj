@@ -47,14 +47,13 @@ f_L1=1575.42*10^6;                                                          %   
 c_0=299792458;                                                              %   speed of light [m/s]
 k_b=1.3806488*(10^(-23));                                                   %   Boltzmann constant
 
-% Filter Selection: EKF, UKF, PF, PF_aug, UKF_aug UKF_aug_smooth smooth
+% Filter Selection: EKF, UKF, PF, PF_aug, UKF_aug
 if exist('test_running','var') && test_running
     filter = test_filter;
 else
-    filter = 'EKF';
+    filter = 'EKF_aug';
 end
 
-% filter = 'PFR';
 
 %%
 
