@@ -1,0 +1,479 @@
+clear all; close all;
+RMSE_lim = 40;
+error_reg = [30 50 100 150]';
+k2end = 200;
+
+%% UKF results
+load('UKF_results.mat')
+UKF_final_error = sqrt(mean(test_error2(:,end-k2end:end),2));
+
+UKF_ferror_idx = UKF_final_error<RMSE_lim;
+UKF_ferror = test_error2(UKF_ferror_idx, :);
+UKF_rmse = sqrt(mean(UKF_ferror,1));
+
+UKF_perc(1) = sum(UKF_final_error < error_reg(1));
+UKF_perc(2) = sum((UKF_final_error > error_reg(1)).*(UKF_final_error < error_reg(2)));
+UKF_perc(3) = sum((UKF_final_error > error_reg(2)).*(UKF_final_error < error_reg(3)));
+UKF_perc(4) = sum((UKF_final_error > error_reg(3)).*(UKF_final_error < error_reg(4)));
+UKF_perc(5) = sum((UKF_final_error > error_reg(4)));
+UKF_perc = UKF_perc/sum(UKF_perc)*100;
+
+UKF_meanTime = mean(mean(test_execTime));
+
+% figure(1)
+% time = (1:length(UKF_rmse))*0.5/60;
+% semilogy(time, UKF_rmse, 'Linewidth', 2.0)
+% hold on;
+% grid on;
+% xlabel('Time [min]', 'Fontsize', 14);
+% ylabel('RMSE [m]', 'Fontsize', 14);
+% xlim([min(time), max(time)]);
+clear test_error2 test_execTime
+
+%% EKF results
+load('EKF_results.mat')
+EKF_final_error = sqrt(mean(test_error2(:,end-k2end:end),2));
+EKF_ferror_idx = EKF_final_error<RMSE_lim;
+EKF_ferror = test_error2(EKF_ferror_idx, :);
+EKF_rmse = sqrt(mean(EKF_ferror,1));
+
+EKF_perc(1) = sum(EKF_final_error < error_reg(1));
+EKF_perc(2) = sum((EKF_final_error > error_reg(1)).*(EKF_final_error < error_reg(2)));
+EKF_perc(3) = sum((EKF_final_error > error_reg(2)).*(EKF_final_error < error_reg(3)));
+EKF_perc(4) = sum((EKF_final_error > error_reg(3)).*(EKF_final_error < error_reg(4)));
+EKF_perc(5) = sum((EKF_final_error > error_reg(4)));
+EKF_perc = EKF_perc/sum(EKF_perc)*100;
+
+EKF_meanTime = mean(mean(test_execTime));
+
+% figure(2)
+% semilogy((1:1801)*0.5, EKF_rmse, 'Linewidth', 2.0)
+% hold on; 
+% grid on;
+% xlabel('Time [sec]', 'Fontsize', 14);
+% ylabel('RMSE [m]', 'Fontsize', 14);
+% xlim([0 1801*0.5]);
+clear test_error2 test_execTime
+
+%% Particle Filter reults N=150
+load('PF150_results.mat')
+PF150_final_error = sqrt(mean(test_error2(:,end-k2end:end),2));
+PF150_ferror_idx = PF150_final_error<RMSE_lim;
+PF150_ferror = test_error2(PF150_ferror_idx, :);
+PF150_rmse = sqrt(nanmean(PF150_ferror,1));
+
+PF150_perc(1) = sum(PF150_final_error < error_reg(1));
+PF150_perc(2) = sum((PF150_final_error > error_reg(1)).*(PF150_final_error < error_reg(2)));
+PF150_perc(3) = sum((PF150_final_error > error_reg(2)).*(PF150_final_error < error_reg(3)));
+PF150_perc(4) = sum((PF150_final_error > error_reg(3)).*(PF150_final_error < error_reg(4)));
+PF150_perc(5) = sum((PF150_final_error > error_reg(4)));
+
+PF150_perc = PF150_perc/sum(PF150_perc)*100;
+
+PF150_meanTime = mean(mean(test_execTime));
+
+% figure(3)
+% semilogy((1:1801)*0.5, PF150_rmse, 'Linewidth', 2.0)
+% hold on; 
+% grid on;
+% xlabel('Time [sec]', 'Fontsize', 14);
+% ylabel('RMSE [m]', 'Fontsize', 14);
+% xlim([0 1801*0.5]);
+clear test_error2 test_execTime
+
+%% Particle Filter results N=300
+load('PF300_results.mat')
+PF300_final_error = sqrt(mean(test_error2(:,end-k2end:end),2));
+PF300_ferror_idx = PF300_final_error<RMSE_lim;
+PF300_ferror = test_error2(PF300_ferror_idx, :);
+PF300_rmse = sqrt(nanmean(PF300_ferror,1));
+
+PF300_perc(1) = sum(PF300_final_error < error_reg(1));
+PF300_perc(2) = sum((PF300_final_error > error_reg(1)).*(PF300_final_error < error_reg(2)));
+PF300_perc(3) = sum((PF300_final_error > error_reg(2)).*(PF300_final_error < error_reg(3)));
+PF300_perc(4) = sum((PF300_final_error > error_reg(3)).*(PF300_final_error < error_reg(4)));
+PF300_perc(5) = sum((PF300_final_error > error_reg(4)));
+PF300_perc = PF300_perc/sum(PF300_perc)*100;
+
+PF300_meanTime = mean(mean(test_execTime));
+
+% figure(4)
+% semilogy((1:1801)*0.5, PF300_rmse, 'Linewidth', 2.0)
+% hold on; 
+% grid on;
+% xlabel('Time [sec]', 'Fontsize', 14);
+% ylabel('RMSE [m]', 'Fontsize', 14);
+% xlim([0 1801*0.5]);
+clear test_error2 test_execTime
+
+%% Particle Filter results N=500
+load('PF500_results.mat')
+PF500_final_error = sqrt(mean(test_error2(:,end-k2end:end),2));
+PF500_ferror_idx = PF500_final_error<RMSE_lim;
+PF500_ferror = test_error2(PF500_ferror_idx, :);
+PF500_rmse = sqrt(nanmean(PF500_ferror,1));
+
+PF500_perc(1) = sum(PF500_final_error < error_reg(1));
+PF500_perc(2) = sum((PF500_final_error > error_reg(1)).*(PF500_final_error < error_reg(2)));
+PF500_perc(3) = sum((PF500_final_error > error_reg(2)).*(PF500_final_error < error_reg(3)));
+PF500_perc(4) = sum((PF500_final_error > error_reg(3)).*(PF500_final_error < error_reg(4)));
+PF500_perc(5) = sum((PF500_final_error > error_reg(4)));
+PF500_perc = PF500_perc/sum(PF500_perc)*100;
+
+PF500_meanTime = mean(mean(test_execTime));
+
+% figure(5)
+% semilogy((1:1801)*0.5, PF500_rmse, 'Linewidth', 2.0)
+% hold on; 
+% grid on;
+% xlabel('Time [sec]', 'Fontsize', 14);
+% ylabel('RMSE [m]', 'Fontsize', 14);
+% xlim([0 1801*0.5]);
+clear test_error2 test_execTime
+
+%% RMSE Comparison
+figure(1)
+legend_rmse{1} = 'Extended Kalman Filter';
+legend_rmse{2} = 'Unscented Kalman Filter';
+legend_rmse{3} = 'Particle Filter (N = 150)';
+legend_rmse{4} = 'Particle Filter (N = 300)';
+legend_rmse{5} = 'Particle Filter (N = 500)';
+time = (1:length(UKF_rmse))*0.5/60;
+semilogy(time, EKF_rmse, 'Linewidth', 2.0)
+hold on;
+semilogy(time, UKF_rmse, 'Linewidth', 2.0)
+hold on;
+semilogy(time, PF150_rmse, 'Linewidth', 2.0)
+hold on;
+semilogy(time, PF300_rmse, 'Linewidth', 2.0)
+hold on;
+semilogy(time, PF500_rmse, 'Linewidth', 2.0)
+grid on;
+xlabel('Time [min]', 'Fontsize', 14);
+ylabel('RMSE [m]', 'Fontsize', 14);
+set(gca, 'FontSize', 14.0);
+xlim([min(time), max(time)]);
+legend(legend_rmse, 'Location', 'NorthEast', 'Fontsize', 14);
+fig = gcf;
+fig.PaperUnits = 'centimeters';
+fig.PaperPosition = [0 0 40 20];
+
+% iptsetpref('ImshowBorder','tight');
+% print('-r300', '-depsc', '../../../report/figures/rmse_anisot')
+
+%% Execution Time Comparison
+figure(2)
+bar(1:5,[EKF_meanTime, UKF_meanTime, PF150_meanTime, PF300_meanTime, PF500_meanTime]*1e3, 'FaceColor',[0 102 204]/255,'EdgeColor',[0 0 255]/255,'LineWidth',1.5)
+hold on;
+set(gca,'YScale','log','XTickLabel',legend_rmse)
+set(gca, 'FontSize', 14.0);
+grid on;
+ylabel('Execution Time [msec]')
+fig = gcf;
+fig.PaperUnits = 'centimeters';
+fig.PaperPosition = [0 0 40 20];
+
+% iptsetpref('ImshowBorder','tight');
+% print('-r300', '-depsc', '../../../report/figures/exec_time_anisot')
+
+%% Success Comparison
+rmse_legend{1} = ['RMSE < ', num2str(error_reg(1)), ' m'];
+rmse_legend{2} = [num2str(error_reg(1)), ' m', ' < RMSE < ', num2str(error_reg(2)), ' m'];
+rmse_legend{3} = [num2str(error_reg(2)), ' m', ' < RMSE < ', num2str(error_reg(3)), ' m'];
+rmse_legend{4} = [num2str(error_reg(3)), ' m', ' < RMSE < ', num2str(error_reg(4)), ' m'];
+rmse_legend{5} = [num2str(error_reg(4)), ' m', ' < RMSE'];
+
+
+figure(3)
+suc_matrix = [EKF_perc; UKF_perc; PF150_perc; PF300_perc; PF500_perc];
+bar(suc_matrix, 'stacked')
+set(gca,'FontSize',14.0, 'XTickLabel',legend_rmse)
+hold on;
+% set(gca,'YScale','log','XTickLabel',legend_rmse, 'XLabel')
+grid on;
+ylabel('%')
+legend(rmse_legend, 'Location','northoutside', 'FontSize', 14)
+
+fig = gcf;
+fig.PaperUnits = 'centimeters';
+fig.PaperPosition = [0 0 40 20];
+
+% iptsetpref('ImshowBorder','tight');
+% print('-r300', '-depsc', '../../../report/figures/error_dist_anisot')
+%% UKF augmented
+k2end = 50;
+load('UKF_aug_results.mat')
+UKFaug_final_error = sqrt(mean(test_error2(:,end-k2end:end),2));
+
+UKFaug_ferror_idx = UKFaug_final_error<RMSE_lim;
+UKFaug_ferror = test_error2(UKFaug_ferror_idx, :);
+UKFaug_rmse = sqrt(mean(UKFaug_ferror,1));
+
+UKFaug_perc(1) = sum(UKFaug_final_error < error_reg(1));
+UKFaug_perc(2) = sum((UKFaug_final_error > error_reg(1)).*(UKFaug_final_error < error_reg(2)));
+UKFaug_perc(3) = sum((UKFaug_final_error > error_reg(2)).*(UKFaug_final_error < error_reg(3)));
+UKFaug_perc(4) = sum((UKFaug_final_error > error_reg(3)).*(UKFaug_final_error < error_reg(4)));
+UKFaug_perc(5) = sum((UKFaug_final_error > error_reg(4)));
+UKFaug_perc = UKFaug_perc/sum(UKFaug_perc)*100;
+
+UKFaug_meanTime = mean(mean(test_execTime));
+clear test_error2 test_execTime
+%% EKF augmented
+
+load('EKF_aug_results.mat')
+EKFaug_final_error = sqrt(mean(test_error2(:,end-k2end:end),2));
+
+EKFaug_ferror_idx = EKFaug_final_error<RMSE_lim;
+EKFaug_ferror = test_error2(EKFaug_ferror_idx, :);
+EKFaug_rmse = sqrt(mean(EKFaug_ferror,1));
+
+EKFaug_perc(1) = sum(EKFaug_final_error < error_reg(1));
+EKFaug_perc(2) = sum((EKFaug_final_error > error_reg(1)).*(EKFaug_final_error < error_reg(2)));
+EKFaug_perc(3) = sum((EKFaug_final_error > error_reg(2)).*(EKFaug_final_error < error_reg(3)));
+EKFaug_perc(4) = sum((EKFaug_final_error > error_reg(3)).*(EKFaug_final_error < error_reg(4)));
+EKFaug_perc(5) = sum((EKFaug_final_error > error_reg(4)));
+EKFaug_perc = EKFaug_perc/sum(EKFaug_perc)*100;
+
+EKFaug_meanTime = mean(mean(test_execTime));
+clear test_error2 test_execTime
+close all;
+%% RMSE Comparison
+figure(4)
+clear legend_rmse
+legend_rmse{1} = 'Extended Kalman Filter';
+legend_rmse{3} = 'Unscented Kalman Filter';
+legend_rmse{2} = 'Extended Kalman Filter Augmented';
+legend_rmse{4} = 'Unscented Kalman Filter Augmented';
+time = (1:length(UKF_rmse))*0.5/60;
+semilogy(time, EKF_rmse, 'Linewidth', 2.0)
+hold on;
+semilogy(time, EKFaug_rmse, 'Linewidth', 2.0)
+hold on;
+semilogy(time, UKF_rmse, 'Linewidth', 2.0)
+hold on;
+semilogy(time, UKFaug_rmse, 'Linewidth', 2.0)
+grid on;
+xlabel('Time [min]', 'Fontsize', 14);
+ylabel('RMSE [m]', 'Fontsize', 14);
+set(gca, 'FontSize', 14.0);
+xlim([min(time), max(time)]);
+legend(legend_rmse, 'Location', 'NorthEast', 'Fontsize', 14);
+fig = gcf;
+fig.PaperUnits = 'centimeters';
+fig.PaperPosition = [0 0 40 20];
+
+% iptsetpref('ImshowBorder','tight');
+% print('-r300', '-depsc', '../../../report/figures/rmse_anisot_aug')
+%% Error Comparison
+figure(5)
+suc_matrix = [EKF_perc; EKFaug_perc; UKF_perc; UKFaug_perc];
+bar(suc_matrix, 'stacked')
+set(gca,'FontSize',14.0, 'XTickLabel',legend_rmse)
+hold on;
+% set(gca,'YScale','log','XTickLabel',legend_rmse, 'XLabel')
+grid on;
+ylabel('%')
+ylim([0, 100]);
+legend(rmse_legend, 'Location','northoutside', 'FontSize', 14)
+
+fig = gcf;
+fig.PaperUnits = 'centimeters';
+fig.PaperPosition = [0 0 40 20];
+
+% iptsetpref('ImshowBorder','tight');
+% print('-r300', '-depsc', '../../../report/figures/error_dist_anisot_aug')
+
+%% Execution Time Comparison
+figure(6)
+bar(1:4,[EKF_meanTime, EKFaug_meanTime, UKF_meanTime, UKFaug_meanTime]*1e3, 'FaceColor',[0 102 204]/255,'EdgeColor',[0 0 255]/255,'LineWidth',1.5)
+hold on;
+set(gca,'XTickLabel',legend_rmse)
+set(gca, 'FontSize', 14.0);
+grid on;
+ylabel('Execution Time [msec]');
+fig = gcf;
+fig.PaperUnits = 'centimeters';
+fig.PaperPosition = [0 0 40 20];
+
+% iptsetpref('ImshowBorder','tight');
+% print('-r300', '-depsc', '../../../report/figures/exec_time_anisot_aug')
+close all
+%% EKF augmented
+
+load('EKF_filt_results.mat')
+EKFfilt_final_error = sqrt(mean(test_error2(:,end-k2end:end),2));
+
+EKFfilt_ferror_idx = EKFfilt_final_error<RMSE_lim;
+EKFfilt_ferror = test_error2(EKFfilt_ferror_idx, :);
+EKFfilt_rmse = sqrt(mean(EKFfilt_ferror,1));
+
+EKFfilt_perc(1) = sum(EKFfilt_final_error < error_reg(1));
+EKFfilt_perc(2) = sum((EKFfilt_final_error > error_reg(1)).*(EKFfilt_final_error < error_reg(2)));
+EKFfilt_perc(3) = sum((EKFfilt_final_error > error_reg(2)).*(EKFfilt_final_error < error_reg(3)));
+EKFfilt_perc(4) = sum((EKFfilt_final_error > error_reg(3)).*(EKFfilt_final_error < error_reg(4)));
+EKFfilt_perc(5) = sum((EKFfilt_final_error > error_reg(4)));
+EKFfilt_perc = EKFfilt_perc/sum(EKFfilt_perc)*100;
+
+EKFfilt_meanTime = mean(mean(test_execTime));
+clear test_error2 test_execTime
+
+%% RMSE Comparison
+figure(4)
+clear legend_rmse
+legend_rmse{1} = 'Extended Kalman Filter';
+legend_rmse{3} = 'Extended Kalman Filter with smoothing';
+legend_rmse{2} = 'Extended Kalman Filter Augmented';
+time = (1:length(UKF_rmse))*0.5/60;
+semilogy(time, EKF_rmse, 'Linewidth', 2.0)
+hold on;
+semilogy(time, EKFaug_rmse, 'Linewidth', 2.0)
+hold on;
+semilogy(time, EKFfilt_rmse, 'Linewidth', 2.0)
+grid on;
+xlabel('Time [min]', 'Fontsize', 14);
+ylabel('RMSE [m]', 'Fontsize', 14);
+set(gca, 'FontSize', 14.0);
+xlim([min(time), max(time)]);
+legend(legend_rmse, 'Location', 'NorthEast', 'Fontsize', 14);
+fig = gcf;
+fig.PaperUnits = 'centimeters';
+fig.PaperPosition = [0 0 40 20];
+
+iptsetpref('ImshowBorder','tight');
+print('-r300', '-depsc', '../../../report/figures/rmse_anisot_filt')
+%% Error Comparison
+figure(5)
+suc_matrix = [EKF_perc; EKFaug_perc; EKFfilt_perc];
+bar(suc_matrix, 'stacked')
+set(gca,'FontSize',14.0, 'XTickLabel',legend_rmse)
+hold on;
+% set(gca,'YScale','log','XTickLabel',legend_rmse, 'XLabel')
+grid on;
+ylabel('%')
+ylim([0, 100]);
+legend(rmse_legend, 'Location','northoutside', 'FontSize', 14)
+
+fig = gcf;
+fig.PaperUnits = 'centimeters';
+fig.PaperPosition = [0 0 40 20];
+
+iptsetpref('ImshowBorder','tight');
+print('-r300', '-depsc', '../../../report/figures/error_dist_anisot_filt')
+
+%% Execution Time Comparison
+figure(6)
+bar(1:3,[EKF_meanTime, EKFaug_meanTime, EKFfilt_meanTime]*1e3, 'FaceColor',[0 102 204]/255,'EdgeColor',[0 0 255]/255,'LineWidth',1.5)
+hold on;
+set(gca,'XTickLabel',legend_rmse)
+set(gca, 'FontSize', 14.0);
+grid on;
+ylabel('Execution Time [msec]');
+fig = gcf;
+fig.PaperUnits = 'centimeters';
+fig.PaperPosition = [0 0 40 20];
+
+iptsetpref('ImshowBorder','tight');
+print('-r300', '-depsc', '../../../report/figures/exec_time_anisot_filt')
+
+%% EKF changing
+
+load('EKF_mov_results.mat')
+EKFmov_final_error = sqrt(mean(test_error2(:,end-k2end:end),2));
+
+EKFmov_ferror_idx = EKFmov_final_error<RMSE_lim;
+EKFmov_ferror = test_error2(EKFmov_ferror_idx, :);
+EKFmov_rmse = sqrt(mean(EKFmov_ferror,1));
+
+EKFmov_perc(1) = sum(EKFmov_final_error < error_reg(1));
+EKFmov_perc(2) = sum((EKFmov_final_error > error_reg(1)).*(EKFmov_final_error < error_reg(2)));
+EKFmov_perc(3) = sum((EKFmov_final_error > error_reg(2)).*(EKFmov_final_error < error_reg(3)));
+EKFmov_perc(4) = sum((EKFmov_final_error > error_reg(3)).*(EKFmov_final_error < error_reg(4)));
+EKFmov_perc(5) = sum((EKFmov_final_error > error_reg(4)));
+EKFmov_perc = EKFmov_perc/sum(EKFmov_perc)*100;
+
+EKFmov_meanTime = mean(mean(test_execTime));
+clear test_error2 test_execTime
+
+%% EKF changing & smoothing
+
+load('EKF_mov_filt_results.mat')
+EKFmovfilt_final_error = sqrt(mean(test_error2(:,end-k2end:end),2));
+
+EKFmovfilt_ferror_idx = EKFmovfilt_final_error<RMSE_lim;
+EKFmovfilt_ferror = test_error2(EKFmovfilt_ferror_idx, :);
+EKFmovfilt_rmse = sqrt(mean(EKFmovfilt_ferror,1));
+
+EKFmovfilt_perc(1) = sum(EKFmovfilt_final_error < error_reg(1));
+EKFmovfilt_perc(2) = sum((EKFmovfilt_final_error > error_reg(1)).*(EKFmovfilt_final_error < error_reg(2)));
+EKFmovfilt_perc(3) = sum((EKFmovfilt_final_error > error_reg(2)).*(EKFmovfilt_final_error < error_reg(3)));
+EKFmovfilt_perc(4) = sum((EKFmovfilt_final_error > error_reg(3)).*(EKFmovfilt_final_error < error_reg(4)));
+EKFmovfilt_perc(5) = sum((EKFmovfilt_final_error > error_reg(4)));
+EKFmovfilt_perc = EKFmovfilt_perc/sum(EKFmovfilt_perc)*100;
+
+EKFmovfilt_meanTime = mean(mean(test_execTime));
+clear test_error2 test_execTime
+close all
+%% RMSE Comparison
+figure(4)
+clear legend_rmse
+legend_rmse{1} = 'EKF';
+legend_rmse{3} = 'EKF with smoothing';
+legend_rmse{2} = 'EKF Augmented';
+legend_rmse{4} = 'EKF with changing reference';
+% legend_rmse{5} = 'EKF with smoothing & changing reference';
+time = (1:length(UKF_rmse))*0.5/60;
+semilogy(time, EKF_rmse, 'Linewidth', 2.0)
+hold on;
+semilogy(time, EKFaug_rmse, 'Linewidth', 2.0)
+hold on;
+semilogy(time, EKFfilt_rmse, 'Linewidth', 2.0)
+hold on;
+semilogy(time, EKFmov_rmse, 'Linewidth', 2.0)
+% hold on;
+% semilogy(time, EKFmovfilt_rmse, 'Linewidth', 2.0)
+grid on;
+xlabel('Time [min]', 'Fontsize', 14);
+ylabel('RMSE [m]', 'Fontsize', 14);
+set(gca, 'FontSize', 14.0);
+xlim([min(time), max(time)]);
+legend(legend_rmse, 'Location', 'NorthEast', 'Fontsize', 14);
+fig = gcf;
+fig.PaperUnits = 'centimeters';
+fig.PaperPosition = [0 0 40 20];
+
+iptsetpref('ImshowBorder','tight');
+print('-r300', '-depsc', '../../../report/figures/rmse_anisot_movfilt')
+%% Error Comparison
+figure(5)
+suc_matrix = [EKF_perc; EKFaug_perc; EKFfilt_perc; EKFmov_perc];
+bar(suc_matrix, 'stacked')
+set(gca,'FontSize',14.0, 'XTickLabel',legend_rmse)
+hold on;
+% set(gca,'YScale','log','XTickLabel',legend_rmse, 'XLabel')
+grid on;
+ylabel('%')
+ylim([0, 100]);
+legend(rmse_legend, 'Location','northoutside', 'FontSize', 14)
+
+fig = gcf;
+fig.PaperUnits = 'centimeters';
+fig.PaperPosition = [0 0 40 20];
+
+iptsetpref('ImshowBorder','tight');
+print('-r300', '-depsc', '../../../report/figures/error_dist_anisot_movfilt')
+
+%% Execution Time Comparison
+figure(6)
+bar(1:4,[EKF_meanTime, EKFaug_meanTime, EKFfilt_meanTime, EKFmov_meanTime]*1e3, 'FaceColor',[0 102 204]/255,'EdgeColor',[0 0 255]/255,'LineWidth',1.5)
+hold on;
+set(gca,'XTickLabel',legend_rmse)
+set(gca, 'FontSize', 14.0);
+grid on;
+ylabel('Execution Time [msec]');
+fig = gcf;
+fig.PaperUnits = 'centimeters';
+fig.PaperPosition = [0 0 40 20];
+
+iptsetpref('ImshowBorder','tight');
+print('-r300', '-depsc', '../../../report/figures/exec_time_anisot_movfilt')
+
